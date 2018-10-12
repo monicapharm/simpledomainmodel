@@ -28,63 +28,16 @@ public struct Money {
   public var currency : String
   
   public func convert(_ to: String) -> Money {
-    switch self.currency {
-        case "USD":
-            switch to {
-                case "USD":
-                    return self
-                case "GBP":
-                    return Money(amount: Int(self.amount/2), currency: "GBP")
-                case "EUR":
-                    return Money(amount: Int(self.amount/2*3), currency: "EUR")
-                case "CAN":
-                    return Money(amount: Int(self.amount/4*5), currency: "CAN")
-                default:
-                    break
-            }
-        case "GBP":
-            switch to {
-                case "GBP":
-                    return self
-                case "EUR":
-                    return Money(amount: Int(self.amount*3), currency: "EUR")
-                case "CAN":
-                    return Money(amount: Int(self.amount/2*5), currency: "CAN")
-                case "USD":
-                    return Money(amount: Int(self.amount*2), currency: "USD")
-                default:
-                    break
-            }
-        case "EUR":
-            switch to {
-                case "EUR":
-                    return self
-                case "GBP":
-                    return Money(amount: Int(self.amount/3), currency: "GBP")
-                case "CAN":
-                    return Money(amount: Int(self.amount/6*5), currency: "CAN")
-                case "USD":
-                    return Money(amount: Int(self.amount/3*2), currency: "USD")
-                default:
-                    break
-            }
-        case "CAN":
-            switch to {
-                case "CAN":
-                    return self
-                case "GBP":
-                    return Money(amount: Int(self.amount/5*2), currency: "GBP")
-                case "EUR":
-                    return Money(amount: Int(self.amount/5*6), currency: "EUR")
-                case "USD":
-                    return Money(amount: Int(self.amount/5*4), currency: "USD")
-                default:
-                    break
-            }
-        default: break
-    }
-        print("invalid currency type")
-        return self
+    let exchangeRates = [
+        "USD": 1,
+        "GBP": 0.5,
+        "EUR": 1.5,
+        "CAN": 1.25
+    ]
+    let rate = exchangeRates[to]! / exchangeRates[currency]!
+    let newAmount = Int(Double(amount) * rate)
+    let newCurrency = to
+    return Money(amount: newAmount, currency: newCurrency)
   }
   
   public func add(_ to: Money) -> Money {
