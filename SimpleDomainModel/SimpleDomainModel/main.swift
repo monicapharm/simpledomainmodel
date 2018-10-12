@@ -102,7 +102,7 @@ open class Person {
         return self._job
     }
     set(value) {
-        if (self.age >= 21) {
+        if (self.age >= 16) {
             self._job = value
         }
     }
@@ -114,7 +114,7 @@ open class Person {
         return self._spouse
     }
     set(value) {
-        if (self.age >= 21) {
+        if (self.age >= 18) {
             self._spouse = value
         }
     }
@@ -131,7 +131,7 @@ open class Person {
   }
 }
 
-/*
+
 ////////////////////////////////////
 // Family
 //
@@ -139,15 +139,33 @@ open class Family {
   fileprivate var members : [Person] = []
   
   public init(spouse1: Person, spouse2: Person) {
+    if (spouse1.spouse == nil && spouse2.spouse == nil) {
+        spouse1.spouse = spouse2
+        spouse2.spouse = spouse1
+        self.members = [spouse1, spouse2]
+    }
   }
   
   open func haveChild(_ child: Person) -> Bool {
+    for member in members {
+        if member.age < 21 {
+            return false
+        }
+    }
+    members.append(child)
+    return true
   }
   
   open func householdIncome() -> Int {
+    var income: Int = 0
+    for member in members {
+        if (member._job != nil) {
+            income += member.job!.calculateIncome(2000)
+        }
+    }
+    return income
   }
 }
- */
 
 
 
