@@ -55,7 +55,6 @@ public struct Money {
 ////////////////////////////////////
 // Job
 //
-/*
 open class Job {
   fileprivate var title : String
   fileprivate var type : JobType
@@ -66,15 +65,30 @@ open class Job {
   }
   
   public init(title : String, type : JobType) {
+    self.title = title
+    self.type = type
   }
   
   open func calculateIncome(_ hours: Int) -> Int {
+    switch self.type {
+    case .Hourly(let hourlySal):
+        return Int(Double(hours) * hourlySal)
+    case .Salary(let yearlySal):
+        return yearlySal
+    }
   }
   
   open func raise(_ amt : Double) {
+    switch self.type {
+    case .Hourly(let hourlySal):
+        self.type = .Hourly(Double(hourlySal) + amt)
+    case .Salary(let yearlySal):
+        self.type = .Salary(yearlySal + Int(amt))
+    }
   }
 }
 
+/*
 ////////////////////////////////////
 // Person
 //
